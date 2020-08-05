@@ -11,22 +11,15 @@
  *
  */
 
-typedef struct b_tree *b_tree;
 typedef struct node_t *node_t;
-struct b_tree
-{
-	int m;
-	node_t node;
-};
 typedef struct key_list *key_list;
 typedef struct pointer_list *pointer_list;
 struct node_t {
-	int key_num;
+	void *data;
 	key_list key;
 	pointer_list pointer;
-	struct node_t *last;
 }
-node_t null_node;
+
 struct key_list {
 	int value;
 	void *data;
@@ -39,8 +32,7 @@ struct pointer_list {
 }
 
 // new
-b_tree B_tree_new (int m);
-node_t Node_new ();
+node_t Node_new (int m);
 key_list Key_new (int value);
 pointer_list Pointer_new ();
 

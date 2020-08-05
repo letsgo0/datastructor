@@ -1,12 +1,7 @@
 #include <stdio.h>
 #include "btree.h"
 #include "new.h"
-/*
-* 2020-08-05
-* code the insert and query function.
-* it's dirty and not clean, not debug
-*
-*/
+
 node_t null_node = {0,0,0,0}; // use ->last to convey some info
 
 node_t Node_new (){
