@@ -2,6 +2,17 @@
 #include "btree.h"
 #include "new.h"
 /*
+* 2020-08-07
+* today, I complete insert() and query().
+* It looks like that I have saw delete(),
+* do it late.
+* 
+* I create struct variable by malloc, but dosen't
+* free it regularly when not used.
+*
+*/
+
+/*
 * 2020-08-05
 * code the insert and query function.
 * it's dirty and not clean, not debug
@@ -215,8 +226,59 @@ void B_tree_insert (b_tree *tree, int value){
 	}
 }
 
+// not end node : replace with the most close right keyword until end
+// end node : if keywords is enough, just delete it directly;
+//			  else if it's too few to keep a node,
+//					1. barrow from brother-node if can
+//					2. merge upward until if can 
 void B_tree_delete (b_tree *tree, int value){
-
+	node_t *location = B_tree_query (tree, value);
+	int min = (tree->m % 2 == 0) ? tree->m / 2 - 1 : tree->m / 2;
+	if (location->key_num == 0)
+	{
+		fprintf(stderr, "Oh, this keyword is not stored in the tree \n");
+		return;
+	}
+	// it's a end node
+	if (location->pointer->node == 0)
+	{
+		if (location->key_num  >= min) // enough to delete directly
+		{
+			key_list *last_key = 0;
+			pointer_list *last_p = 0;
+			key_list *key = location->key;
+			pointer_list *pointer = location->pointer;
+			while (key)
+			{
+				if (value == key->value)
+				{
+					break;
+				}
+				last_key = key;
+				last_p = pointer;
+				key = key->next;
+				pointer = pointer->next;
+			}
+			if (last_key == 0)
+			{
+				loaction->key = key->next;
+				LOSE(key);
+				location->pointer = pointer->next;
+				LOSE(pointer);
+			}
+			else
+			{
+				last->key->next = key->next;
+				last->p->next = pointer->next;
+				LOSE(key);
+				LOSE(pointer);
+			}
+		}
+		else
+		{
+			// TODO 
+		}
+	}
 }
 
 // return
