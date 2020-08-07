@@ -1,3 +1,10 @@
+#ifndef BTREE_H
+#define BTREE_H
+
+#define DEBUG 0
+
+#define T_DEBUG 0
+
 /*
  *
  * author: CTY
@@ -11,41 +18,47 @@
  *
  */
 
-typedef struct b_tree *b_tree;
-typedef struct node_t *node_t;
+typedef struct b_tree b_tree;
+typedef struct node_t node_t;
 struct b_tree
 {
 	int m;
-	node_t node;
+	node_t *node;
 };
-typedef struct key_list *key_list;
-typedef struct pointer_list *pointer_list;
+
+typedef struct key_list key_list;
+typedef struct pointer_list pointer_list;
 struct node_t {
 	int key_num;
-	key_list key;
-	pointer_list pointer;
+	key_list *key;
+	pointer_list *pointer;
 	struct node_t *last;
-}
-node_t null_node;
+	struct node_t *next; // point to next  horizontally
+};
+
 struct key_list {
 	int value;
 	void *data;
 	struct key_list *next;
-}
+};
 
 struct pointer_list {
-	node_t node;
+	node_t *node;
 	struct pointer_list *next;
-}
+};
 
 // new
-b_tree B_tree_new (int m);
-node_t Node_new ();
-key_list Key_new (int value);
-pointer_list Pointer_new ();
+b_tree* B_tree_new (int m);
+node_t* Node_new ();
+key_list* Key_new (int value);
+pointer_list* Pointer_new ();
 
 // operations
-void Node_insert (node_t node, int value);
-void Node_delete (node_t node, int value);
-node_t Node_query (node_t node, int value);
+void B_tree_insert (b_tree *tree, int value);
+void B_tree_delete (b_tree *tree, int value);
+node_t* B_tree_query (b_tree *tree, int value);
+void B_tree_print (b_tree *tree);
 
+#define NULL_NODE {0,0,0,0,0}
+
+#endif
